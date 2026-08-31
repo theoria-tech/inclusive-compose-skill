@@ -1,0 +1,15 @@
+name: verify
+
+on: [push, pull_request]
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      # 単一ソース(.rulesync/) から再生成し、生成物と差分が無いか検証する。
+      # ソース編集後に再生成し忘れ／生成物を手編集していると exit 1 で落ちる。
+      - run: npx --yes rulesync@16 generate --check
