@@ -17,6 +17,7 @@ applyTo: '**/*.kt,**/*.kts'
 
 - アイコン＋ラベルは 1 コントロールとしてマージして読ませる。
 - 複合装飾を完全に読み上げから外すときは `Modifier.clearAndSetSemantics {}`（子孫の semantics を消し、1つの意味に置き換える）。
+- 意味を持つ画像・イラストは `Modifier.semantics { role = Role.Image; contentDescription = "…" }` で説明を付ける（装飾画像は `contentDescription = null`）。
 
 ## Compose
 

@@ -15,6 +15,7 @@ applyTo: '**/*.kt,**/*.kts'
 ## nice
 
 - 見出しを枠に収めたいときのみ `TextAutoSize.StepBased`（`maxLines` かサイズ制約とセット）。
+- 読みやすさのため行間・字間を確保：本文は `lineHeight` をフォントの約1.5倍に（必要なら `letterSpacing`）＝WCAG 1.4.8。詰めすぎない。
 
 ## Compose
 

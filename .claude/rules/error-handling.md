@@ -18,6 +18,7 @@ paths:
 
 - 動的に出る変化は `liveRegion = LiveRegionMode.Polite`。見出しには `heading()`。
 - `announceForAccessibility` は Android 16 で非推奨。後継＝ `error` / `liveRegion` / `stateDescription`（画面遷移級は `paneTitle`）。
+- エラー発生時は `FocusRequester` でエラー文へ焦点を移すと、読み上げ・キーボード操作で即気づける。
 
 ## Compose
 

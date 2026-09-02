@@ -15,6 +15,8 @@ applyTo: '**/*.kt,**/*.kts'
 ## nice
 
 - 読み上げ順が不自然なら `traversalIndex` / `isTraversalGroup` で整える。
+- リスト/グリッドは位置を読み上げ：親に `Modifier.semantics { collectionInfo = CollectionInfo(rowCount, columnCount) }`、各項目に `collectionItemInfo = CollectionItemInfo(rowIndex, 1, columnIndex, 1)`（「5件中1件目」）。
+- 進捗バー/スライダーは `Modifier.semantics { progressBarRangeInfo = ProgressBarRangeInfo(current, 0f..max, steps) }` で現在値を読み上げ。
 
 ## Compose
 

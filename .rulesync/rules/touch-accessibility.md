@@ -23,6 +23,8 @@ globs: ["**/*.kt", "**/*.kts"]
 - アイコン＋ラベルは 1 コントロールとしてマージして読ませる。
 - 選択・切り替えの確定に触覚を添える：`LocalHapticFeedback.current.performHapticFeedback(HapticFeedbackType.LongPress)`（音に頼らず手応えで伝える）。
 - 読み上げ順が不自然なら `traversalIndex` / `isTraversalGroup` で整える。
+- スワイプ削除など隠れた操作は `Modifier.semantics { customActions = listOf(CustomAccessibilityAction("削除") { …; true }) }` で TalkBack に出す（子の重複は `clearAndSetSemantics` で消す）。
+- 押せない状態は `Modifier.semantics { disabled() }` で「無効」と読み上げさせる（グレー表示だけに頼らない）。
 
 ## Compose
 
