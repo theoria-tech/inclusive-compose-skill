@@ -17,8 +17,7 @@ globs: ["**/*.kt", "**/*.kts"]
 ## nice
 
 - 一文一義。長い説明は分割する。
-- 入力欄は用途に合うキーボードを出す：`KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Done)`（メール・数値・電話など＝入力ミスと手間を減らす）。
-- 個人情報の入力欄は Autofill を有効化：`Modifier.semantics { contentType = ContentType.EmailAddress }`（再入力の負担を減らす）。
+- 入力の作法（キーボード種別・Autofill）は `navigation` 参照。
 
 ## Compose
 

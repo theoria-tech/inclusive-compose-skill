@@ -22,8 +22,8 @@ globs: **/*.kt,**/*.kts
 - アイコン＋ラベルは 1 コントロールとしてマージして読ませる。
 - 選択・切り替えの確定に触覚を添える：`LocalHapticFeedback.current.performHapticFeedback(HapticFeedbackType.LongPress)`（音に頼らず手応えで伝える）。
 - 読み上げ順が不自然なら `traversalIndex` / `isTraversalGroup` で整える。
-- スワイプ削除など隠れた操作は `Modifier.semantics { customActions = listOf(CustomAccessibilityAction("削除") { …; true }) }` で TalkBack に出す（子の重複は `clearAndSetSemantics` で消す）。
-- 押せない状態は `Modifier.semantics { disabled() }` で「無効」と読み上げさせる（グレー表示だけに頼らない）。
+- スワイプ削除など隠れた操作は `Modifier.semantics { customActions = listOf(CustomAccessibilityAction("削除") { onDelete(); true }) }` で TalkBack のアクションに出す（返り値 true＝実行成功。同じ操作を子要素が二重に読むなら `clearAndSetSemantics` でまとめ直す＝ラベルは張り直す）。
+- 押せない状態は標準コンポーネントの `enabled = false` で表す（無効の読み上げとタップ無効を両立。グレー表示だけに頼らない）。自作 UI なら `Modifier.semantics { disabled() }`。
 
 ## Compose
 

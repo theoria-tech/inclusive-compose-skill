@@ -16,7 +16,7 @@ globs: ["**/*.kt", "**/*.kts"]
 ## nice
 
 - 明るさ（コントラスト/ダークモード）の切り替えに全画面で追従する。
-- モーションは控えめに。アニメは Compose 標準 API（`animate*AsState` / `AnimatedVisibility` 等）で書く＝1.2.0 以降、システムの「アニメを減らす/切る」設定を自動で尊重する（手書きのループで動かさない・過剰な自動再生を置かない）。
+- モーションは控えめに。アニメは Compose 標準 API（`animate*AsState` / `AnimatedVisibility` 等）で書く＝Compose 1.2 以降、システムの「アニメーションを削除」設定を自動で尊重する。自前のループ再生や常時自動再生は置かない。
 
 ## Compose
 

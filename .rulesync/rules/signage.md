@@ -17,8 +17,8 @@ globs: ["**/*.kt", "**/*.kts"]
 ## nice
 
 - 読み上げ順が不自然なら `traversalIndex` / `isTraversalGroup` で整える。
-- リスト/グリッドは位置を読み上げ：親に `Modifier.semantics { collectionInfo = CollectionInfo(rowCount, columnCount) }`、各項目に `collectionItemInfo = CollectionItemInfo(rowIndex, 1, columnIndex, 1)`（「5件中1件目」）。
-- 進捗バー/スライダーは `Modifier.semantics { progressBarRangeInfo = ProgressBarRangeInfo(current, 0f..max, steps) }` で現在値を読み上げ。
+- **自作**のリスト/グリッド（`LazyColumn`/`selectableGroup` は自動付与されるので不要）は、親に `collectionInfo = CollectionInfo(rowCount, columnCount)`、各項目に `collectionItemInfo = CollectionItemInfo(rowIndex, 1, columnIndex, 1)`（「5件中1件目」）で位置を読み上げ。
+- **自作**の進捗表示は `Modifier.semantics { progressBarRangeInfo = ProgressBarRangeInfo(progress, 0f..1f) }` で現在値を読み上げ（Material の `Slider`/`ProgressIndicator` は自動付与）。
 
 ## Compose
 
