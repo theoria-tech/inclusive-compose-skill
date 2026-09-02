@@ -32,5 +32,5 @@ OutlinedTextField(
 
 ## 検証
 
-- semantics に `error` が付くことを assert する Compose UI テスト。
+- error semantics が付くことを assert：`onNode(hasText("…部分文言…", substring = true)).assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Error))`（フル一致なら `onNodeWithText(fullMessage).assert(...)`）。**架空文でなく実文言に一致させる**。
 - TalkBack で Before（"Invalid input"）→ After（原因＋解決策）の読み上げを聞き比べ。

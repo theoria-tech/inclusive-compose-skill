@@ -19,6 +19,17 @@ applyTo: '**/*.kt,**/*.kts'
 
 ```kotlin
 MaterialTheme(colorScheme = AppColorScheme, typography = AppTypography) { App() }
+
+// M3 の ColorScheme に無い色（見出し色・チップ・ナビ選択色）は staticCompositionLocalOf で
+// テーマに束ねる＝画面ごとにハードコードせず一貫させる
+@Immutable data class AppExtraColors(
+    val heading: Color = Color(0xFF452910),
+    val chipContainer: Color = Color(0xFF7E6E60),
+)
+val LocalAppExtraColors = staticCompositionLocalOf { AppExtraColors() }
+CompositionLocalProvider(LocalAppExtraColors provides AppExtraColors()) {
+    MaterialTheme(colorScheme = AppColorScheme) { App() }
+}
 ```
 
 ## 検証

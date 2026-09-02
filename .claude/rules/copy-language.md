@@ -17,6 +17,26 @@ paths:
 
 - 一文一義。長い説明は分割する。
 
+## Compose
+
+```kotlin
+// ボタンは動詞で「何が起きるか」を書く（表示文言＝読み上げ文言）
+OutlinedButton(onClick = onSend) { Text("メールで送る") }   // 「送信」でなく動詞
+
+// 本文中のリンクは生 clickable でなく LinkAnnotation＝TalkBack が「リンク」と認識・フォーカスできる
+val text = buildAnnotatedString {
+    append("使い方は")
+    withLink(
+        LinkAnnotation.Url(
+            "https://example.com/help",
+            TextLinkStyles(SpanStyle(textDecoration = TextDecoration.Underline)),
+        ),
+    ) { append("選び方ガイド") }
+    append("を参照。")
+}
+Text(text)
+```
+
 ## 検証
 
 - 主要文言を音読し、初見で意味が取れるかレビュー。TalkBack 読み上げが自然か確認。

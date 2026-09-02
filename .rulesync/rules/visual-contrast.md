@@ -27,9 +27,13 @@ val AppColorScheme = lightColorScheme(
   primary = Color(0xFF1848A1), onPrimary = Color(0xFFFFFFFF), // ≈ 8.5:1
 )
 MaterialTheme(colorScheme = AppColorScheme) { App() } // アプリルートに置く＝画面間で一貫
+
+// デザインが [must] を割るとき＝黙って再現せず、理由を記録して最小限だけ直す（overview の優先順位）
+// 例：チップ背景 #998B7D は白14spで 3.3:1（<4.5:1）→ 最小限だけ暗色化して ≈4.9:1 に
+private val ChipContainer = Color(0xFF7E6E60) // 元 #998B7D／理由をコメントで残しデザイナーが Figma に反映できるように
 ```
 
 ## 検証
 
 - `ColorScheme` の値からコントラスト比を算出する単体テストを書き、4.5:1 を assert。
-- Accessibility Scanner / Accessibility Test Framework の `TextContrastCheck`。
+- Accessibility Scanner / Accessibility Test Framework の `TextContrastCheck`（テストで `enableAccessibilityChecks()` を足すと、操作のたびに低コントラストを自動 fail）。

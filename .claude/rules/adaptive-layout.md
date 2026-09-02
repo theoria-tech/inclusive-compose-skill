@@ -15,13 +15,14 @@ paths:
 - 幅の分岐は `WindowSizeClass`（Compact <600dp / Medium 600–840dp / Expanded ≥840dp）で行い、Compact＝1列 → Expanded＝複数ペインに **reflow** する。散らばった固定 dp のマジックナンバー分岐にしない。
 - 分岐の計算は **`WindowSizeClass.calculateFromSize(DpSize)`**（純関数）を使う。`calculateWindowSizeClass(activity)` は Activity 依存で `@Preview`／スクショテストで計算できないので使わない。
 - 向き固定（`android:screenOrientation`）や `android:resizeableActivity="false"` を書かない（targetSdk 37 では sw600dp+ で無視。Android 16 の opt-out `PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY` は一時措置で 37 廃止）。
-- 広い画面を**引き伸ばしで埋めない**。1列を横に伸ばして1行を長くしたり、固定幅中央寄せで両脇を余白で捨てるのでなく、情報の配置を組み替える（1.4.10：行長を読める範囲に保つ）。
+- 広い画面を**引き伸ばしで埋めない**。1列を横に伸ばして1行を長くしたり、固定幅中央寄せで両脇を余白で捨てるのでなく、情報の配置を組み替える（1.4.10：行長を読める範囲に保つ）。**行長は `Modifier.widthIn(max = 480.dp)`（1列）／2ペインは各カラム `weight(1f)` ＋全体 `widthIn(max = 960.dp)` で上限を付ける**。
 - レイアウトが切り替わっても**表示内容・操作・読み上げ/フォーカス順を同一に保つ**（列→行に組み替えても意味の順序を変えない。サイズで機能を増減させない）。
 
 ## nice
 
 - ナビは `NavigationSuiteScaffold`（compact＝バー / expanded＝レール）、一覧+詳細は **Navigation 3 なら `ListDetailSceneStrategy`（`rememberListDetailSceneStrategy` を `NavDisplay` の `sceneStrategies` に渡す・`androidx.compose.material3.adaptive:adaptive-navigation3`）** に寄せる（公式アダプティブ skill は Nav3 文脈で `ListDetailPaneScaffold`/`SupportingPaneScaffold` を「使うな」＝非推奨。ただし両者は **非 deprecated**〔stable 1.3.0〕で、Nav3 非採用なら従来どおり可）。※既定で `currentWindowAdaptiveInfo()`（Activity ウィンドウ依存）を使うため、`@Preview` では directive（`layoutType`／`scaffoldDirective` 相当）を明示的に渡す。
 - 回転・折りたたみ・リサイズの再生成で入力状態を失わせない（`rememberSaveable`／ViewModel。navigation ルールの「戻っても失わせない」と同じ）。
+- システムバー/ノッチ/IME を避ける：`Modifier.statusBarsPadding()`／`navigationBarsPadding()`／`imePadding()`、まとめて `Modifier.windowInsetsPadding(WindowInsets.safeDrawing)`。固定 padding でシステム領域に潜り込ませない。
 
 ## Compose
 
@@ -45,7 +46,7 @@ fun ReportRoute(modifier: Modifier = Modifier) = BoxWithConstraints(modifier.fil
 
 ## 検証
 
-- `@Preview(widthDp = 360)` と `@Preview(widthDp = 900)` の2枚をスクショテストに含め、1列→複数ペインに reflow することを画像で確認。
-- `fontScale = 1.5f` を掛けた expanded プレビューで、はみ出し・見切れ・重なりが無いことを確認。
+- スクショテスト（AGP Compose Preview Screenshot Testing）に `@PreviewTest @Preview(widthDp = 393)` と `@Preview(widthDp = 900)` を含め、1列→複数ペインに reflow することを画像で確認。
+- `@Preview(widthDp = 900, fontScale = 1.5f)` で大画面×大フォント併用でも、はみ出し・見切れ・重なりが無いことを確認。
 - Manifest を grep し、`screenOrientation` 固定と `resizeableActivity="false"` が無いことを確認。
 - 実機/エミュ：分割画面・回転・ウィンドウリサイズ後に入力途中の状態が残ることを確認。

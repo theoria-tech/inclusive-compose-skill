@@ -17,6 +17,19 @@ paths:
 
 - 読み上げ順が不自然なら `traversalIndex` / `isTraversalGroup` で整える。
 
+## Compose
+
+```kotlin
+// 見出し＝TalkBack の見出しジャンプ対象
+Text("当事者様のお名前", Modifier.semantics { heading() })
+// 複数要素を1つの意味に合成して読み上げる（例：進捗バー → 「進捗、全10問中2問目」）
+Row(Modifier.semantics(mergeDescendants = true) {
+    contentDescription = "進捗、全${total}問中 ${current}問目"
+}) { /* 個々のセグメントは装飾＝読み上げない */ }
+// タップの意味を読み上げに乗せる（「登録」だけでなく「お名前を登録する」と伝わる）
+Modifier.clickable(onClickLabel = "お名前を登録する", onClick = onEdit)
+```
+
 ## 検証
 
 - TalkBack の見出しジャンプで主要セクションに移動できることを確認。

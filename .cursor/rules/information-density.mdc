@@ -20,6 +20,7 @@ globs: **/*.kt,**/*.kts
 
 ```kotlin
 Text(choiceLabel) // 選択肢・本文ラベルは maxLines / Ellipsis で切らない（softWrap 既定で全文が折り返る）
+Column(Modifier.widthIn(max = 480.dp)) { /* 長文カードは幅に上限＝1行を伸ばしすぎない（読みやすい行長） */ }
 var expanded by rememberSaveable { mutableStateOf(false) } // 段階的開示は開閉状態を保持
 if (expanded) Text(detail) // 必要になってから追加情報を出す（AnimatedVisibility でも可）
 ```

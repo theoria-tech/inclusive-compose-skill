@@ -9,26 +9,36 @@ globs: **/*.kt,**/*.kts
 
 ## must
 
-- タップ領域は **最小 48dp**：`Modifier.minimumInteractiveComponentSize()`（Material Design タッチターゲット指針由来・手引きには無い拡張）。
+- タップ領域は **最小 48dp**。2通りで担保する（Material Design タッチターゲット指針由来・手引きには無い拡張）：
+  - `Modifier.minimumInteractiveComponentSize()`（見た目サイズは変えず、当たり判定だけ48dp相当に広げる）
+  - `Modifier.heightIn(min = 48.dp)`（行・カード等、要素自体の高さ下限で担保する場合）
 - アイコンだけのボタンにしない。**文字ラベルを併記**する。
 - 選択肢は `Modifier.selectable(selected, role = Role.RadioButton, onClick = …)`、親に `Modifier.selectableGroup()`。
+- オン/オフ・チェックのトグルは `Modifier.toggleable(value, role = Role.Switch /* or Role.Checkbox */, onValueChange = …)` ＋ `stateDescription` で状態も読み上げる（`color-semantics` 参照）。
 - **装飾アイコンは `contentDescription = null`**。意味はラベルが持つ（二重読み上げ防止）。
 
 ## nice
 
 - アイコン＋ラベルは 1 コントロールとしてマージして読ませる。
+- 選択・切り替えの確定に触覚を添える：`LocalHapticFeedback.current.performHapticFeedback(HapticFeedbackType.LongPress)`（音に頼らず手応えで伝える）。
 - 読み上げ順が不自然なら `traversalIndex` / `isTraversalGroup` で整える。
 
 ## Compose
 
 ```kotlin
+val haptic = LocalHapticFeedback.current
 Row(Modifier
-    .minimumInteractiveComponentSize()
-    .selectable(selected, role = Role.RadioButton, onClick = onToggle)
-) { Icon(icon, contentDescription = null); Text("選択肢のラベル") } // 親に Modifier.selectableGroup()
+    .fillMaxWidth()
+    .selectable(selected, role = Role.RadioButton, onClick = {
+        haptic.performHapticFeedback(HapticFeedbackType.LongPress); onToggle()
+    })
+    .heightIn(min = 48.dp)          // 48dp は高さの下限で担保（行は全幅）
+) { Text("選択肢のラベル", Modifier.weight(1f)); if (selected) Icon(Icons.Filled.CheckCircle, null) }
+// 親に Modifier.selectableGroup()
 ```
 
 ## 検証
 
 - `onNodeWithText("選択肢のラベル").assertIsSelected()`
-- `onNodeWithText("選択肢のラベル").assertHeightIsAtLeast(48.dp)`（48dp は heightIn の下限＝高さで担保。TouchWidth 等値ではない）
+- 48dp は**高さ**で担保：`onNodeWithText("選択肢のラベル").assertHeightIsAtLeast(48.dp)`。**`assertTouchWidthIsEqualTo(48.dp)` は誤り**（全幅の行では等値にならず落ちる）。行を明示するなら `onNode(hasText(label) and isSelectable()).assertHeightIsAtLeast(48.dp)`。
+- 横断チェックは `enableAccessibilityChecks()`（`androidx.compose.ui:ui-test-junit4-accessibility` ／ `createAndroidComposeRule<ComponentActivity>()`）を足すと、操作のたびにタップ領域・コントラスト・順序を自動 fail。

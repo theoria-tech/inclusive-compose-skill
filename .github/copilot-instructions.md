@@ -34,3 +34,20 @@ Jetpack Compose で UI を書くとき、"とりあえず動く UI" ではなく
 - 本文テキストに `autoSize` を撒いてユーザーのフォントスケール設定を打ち消す。
 - `liveRegion` を乱用して読み上げを騒がしくする。
 - コントラスト比を計算せずに「4.5:1 を満たした」と主張する。
+
+## Compose アクセシビリティ API 早見（どの困りごとにどの API か）
+
+| 困りごと | Compose API | 主に使うルール |
+|---|---|---|
+| 選択状態を読み上げ | `Modifier.selectable(selected, role = Role.RadioButton)` ＋親 `selectableGroup()` | touch-accessibility |
+| オン/オフ状態を読み上げ | `Modifier.toggleable(value, role = Role.Switch, onValueChange)` ＋ `stateDescription` | color-semantics / notification-sound |
+| 複合要素を1つの読み上げにまとめる | `Modifier.semantics(mergeDescendants = true){ contentDescription = … }` | signage / pictogram-icon |
+| 装飾を読み上げから外す | `contentDescription = null` ／ `Modifier.clearAndSetSemantics {}` | pictogram-icon |
+| タップの意味を伝える | `Modifier.clickable(onClickLabel = "…", onClick = …)` | navigation / support |
+| 動的メッセージを即読み上げ | `Modifier.semantics{ liveRegion = LiveRegionMode.Polite }` | error-handling / notification-sound |
+| エラーを semantics に載せる | `Modifier.semantics{ error(msg) }` | error-handling |
+| 見出しジャンプ | `Modifier.semantics{ heading() }` | signage |
+| 読み上げ順の調整 | `isTraversalGroup` / `traversalIndex` | signage / touch-accessibility |
+| 画面遷移級の変化を告知 | `Modifier.semantics{ paneTitle = "…" }` | navigation / adaptive-layout |
+| 行長を保つ reflow | `Modifier.widthIn(max = …)` ／ `WindowSizeClass.calculateFromSize` | adaptive-layout |
+| 横断 a11y チェック | テストで `enableAccessibilityChecks()`（`ui-test-junit4-accessibility`） | 各ルールの検証 |
