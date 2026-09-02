@@ -25,4 +25,4 @@ Text(title, maxLines = 1, autoSize = TextAutoSize.StepBased(minFontSize = 20.sp,
 
 ## 検証
 
-- `fontScale = 2f` の `@Preview` をスクショテストに含め、200% で本文が見切れないこと・見出しが枠に収まることを画像で確認する。
+- `@PreviewTest @Preview(fontScale = 2.0f)` をスクショテストに含め、200% で本文が見切れないこと・見出しが枠に収まることを画像で確認する。

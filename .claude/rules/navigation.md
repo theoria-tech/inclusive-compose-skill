@@ -24,8 +24,13 @@ paths:
 
 ```kotlin
 LaunchedEffect(formState) { draftRepository.saveDebounced(formState) } // 自動下書き
-// 戻るは介入しない → Navigation 3 の予測的戻るアニメがそのまま出る。下書きは残る。
-// カスタム介入が要る場合のみ androidx.navigationevent の NavigationBackHandler。
+// 既定：戻るに介入しない → 予測的戻るアニメがそのまま出る。下書きは残る。
+// 戻り進捗に合わせて UI を動かす等、介入が要る場合のみ PredictiveBackHandler（activity-compose 1.8+）
+PredictiveBackHandler(enabled = hasDraft) { progress: Flow<BackEventCompat> ->
+    try { progress.collect { e -> /* e.progress: 0f..1f で UI 追従 */ }; onConfirmedBack() }
+    catch (e: CancellationException) { /* ジェスチャ取消：UI を戻す */ } // import kotlin.coroutines.cancellation.CancellationException
+}
+// タップの意味は clickable(onClickLabel = "…") で読み上げに乗せる
 ```
 
 ## 検証

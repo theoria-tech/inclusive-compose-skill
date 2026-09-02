@@ -16,6 +16,21 @@ paths:
 
 - ヘルプは専門用語なしの平易な言葉で（`copy-language` 参照）。
 
+## Compose
+
+```kotlin
+// 「選び方」等の軽いヘルプ導線：48dp タップ＋操作ラベルを読み上げに乗せる
+Text(
+    text = "選択肢の選び方",
+    textDecoration = TextDecoration.Underline,
+    modifier = Modifier
+        .heightIn(min = 48.dp)
+        .clickable(role = Role.Button, onClickLabel = "選び方を開く", onClick = onOpenGuide)
+        .padding(horizontal = 8.dp, vertical = 12.dp),
+)
+// 本文内の助け導線は LinkAnnotation で（TalkBack が「リンク」と認識・copy-language 参照）
+```
+
 ## 検証
 
 - 主要フローで「詰まったときの逃げ道」があるかレビュー。

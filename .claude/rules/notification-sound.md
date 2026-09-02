@@ -17,6 +17,23 @@ paths:
 - 触覚フィードバック（haptics）を補助的に併用する。
 - 動的な通知は `liveRegion` でスクリーンリーダーに伝える。
 
+## Compose
+
+```kotlin
+// 音だけに頼らない＝視覚（色+文字+アイコン）+ 触覚 + semantics で伝える
+val haptic = LocalHapticFeedback.current
+haptic.performHapticFeedback(HapticFeedbackType.LongPress)  // 触覚（確定の手応え）
+
+// 動的な通知は liveRegion で即読み上げ。状態は stateDescription でも表す
+Text(
+    text = statusMsg,
+    modifier = Modifier.semantics {
+        liveRegion = LiveRegionMode.Polite
+        stateDescription = "送信済み"
+    },
+)
+```
+
 ## 検証
 
 - 音を切った状態で、すべての重要フィードバックが視覚で分かるか確認。

@@ -18,6 +18,24 @@ globs: ["**/*.kt", "**/*.kts"]
 ## nice
 
 - アイコン＋ラベルは 1 コントロールとしてマージして読ませる。
+- 複合装飾を完全に読み上げから外すときは `Modifier.clearAndSetSemantics {}`（子孫の semantics を消し、1つの意味に置き換える）。
+
+## Compose
+
+```kotlin
+// 装飾アイコンは読み上げない
+Icon(Icons.Filled.Call, contentDescription = null)
+// アイコン＋ラベルは1コントロールにまとめて読ませる（二重読み上げ防止）
+Row(Modifier.semantics(mergeDescendants = true) {}) { Icon(icon, null); Text("ラベル") }
+// ナビの絵アイコンは常時ラベル表示（アイコン単独に頼らない）
+NavigationBarItem(
+    selected, onClick,
+    icon = { Icon(tab.icon, null) }, label = { Text(tab.label) },
+    alwaysShowLabel = true,
+)
+// 意味を持つアイコンで文字が無い場合のみ、contentDescription に意味を書く
+Icon(Icons.Filled.Warning, contentDescription = "警告")
+```
 
 ## 背景
 
