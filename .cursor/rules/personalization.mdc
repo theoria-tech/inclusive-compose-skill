@@ -16,6 +16,7 @@ globs: **/*.kt,**/*.kts
 ## nice
 
 - 見出しを枠に収めたいときのみ `TextAutoSize.StepBased`（`maxLines` かサイズ制約とセット）。
+- 本文の `lineHeight` はフォントサイズの約1.5倍（WCAG 1.4.8）。字間 `letterSpacing` を触るなら詰めすぎない（WCAG 1.4.12 Text Spacing）。Material タイポグラフィ（`bodyLarge` 等）は概ね満たす。
 
 ## Compose
 

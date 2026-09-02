@@ -15,6 +15,7 @@ applyTo: '**/*.kt,**/*.kts'
 ## nice
 
 - 一文一義。長い説明は分割する。
+- 入力の作法（キーボード種別・Autofill）は `navigation` 参照。
 
 ## Compose
 
